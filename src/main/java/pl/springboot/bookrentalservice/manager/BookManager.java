@@ -4,8 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
+import pl.springboot.bookrentalservice.dao.BookRentalRepo;
 import pl.springboot.bookrentalservice.dao.BookRepo;
 import pl.springboot.bookrentalservice.dao.entity.Book;
+import pl.springboot.bookrentalservice.dao.entity.RentalBook;
 
 import java.time.LocalDate;
 import java.util.Optional;
@@ -13,10 +15,12 @@ import java.util.Optional;
 @Service
 public class BookManager {
     private BookRepo bookRepo;
+    private BookRentalRepo bookRentalRepo;
 
     @Autowired
-    public BookManager(BookRepo bookRepo) {
+    public BookManager(BookRepo bookRepo, BookRentalRepo bookRentalRepo) {
         this.bookRepo = bookRepo;
+        this.bookRentalRepo = bookRentalRepo;
     }
 
     public Optional<Book> findById(Long id) {
@@ -28,6 +32,7 @@ public class BookManager {
     }
 
     public Book save(Book videoCassette) {
+        bookRentalRepo.save(new RentalBook(0L, videoCassette.getId(),false));
         return bookRepo.save(videoCassette);
     }
 
