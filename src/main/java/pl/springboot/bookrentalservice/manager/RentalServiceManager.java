@@ -22,8 +22,9 @@ public class RentalServiceManager {
     private BookRentalRepo bookRentalRepo;
 
     @Autowired
-    private RentalServiceManager(RentalServiceRepo rentalServiceRepo) {
+    private RentalServiceManager(RentalServiceRepo rentalServiceRepo, BookRentalRepo bookRentalRepo) {
         this.rentalServiceRepo = rentalServiceRepo;
+        this.bookRentalRepo = bookRentalRepo;
     }
 
     public Iterable<RentalService> findAll() {
@@ -48,13 +49,9 @@ public class RentalServiceManager {
     }
 
     public RentalService rentBook(RentBookWrapper rentBookWrapper) {
-        System.out.println(rentBookWrapper.getIdBook());
-        System.out.println(rentBookWrapper.getIdUser());
-
         Optional<RentalBook> rentalBook = bookRentalRepo.findById(rentBookWrapper.getIdBook());
-        System.out.println(rentalBook);
         //getting user here
-        RentalService rentalService = new RentalService(1L, rentalBook.get().getIdBook().longValue(),rentalBook.get().getIdBook().longValue() ,LocalDate.now(),LocalDate.now());
+        RentalService rentalService = new RentalService(0L, rentalBook.get().getIdBook().longValue(),rentalBook.get().getIdBook().longValue() ,LocalDate.now(),LocalDate.now());
         return rentalServiceRepo.save(rentalService);
     }
 }

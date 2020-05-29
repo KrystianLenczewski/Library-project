@@ -27,20 +27,20 @@ public class BookRentalApi {
         return bookRentalManager.findById(index);
     }
 
-//    @PostMapping
-//    public Book addBook(@RequestBody Book book) {
-//        return libraryManager.save(book);
-//    }
-//
+    @PostMapping
+    public RentalBook addBook(@RequestBody RentalBook book) {
+        return bookRentalManager.save(book);
+    }
+
     @PutMapping
     public RentalBook updateBook(@RequestBody RentalBook rentalBook) {
         return bookRentalManager.save(rentalBook);
     }
-//
-//    @DeleteMapping
-//    public void deleteBook(@RequestParam Long index) {
-//        libraryManager.deleteById(index);
-//    }
+
+    @DeleteMapping
+    public void deleteBook(@RequestParam Long index) {
+        bookRentalManager.deleteById(index);
+    }
 
 
 
