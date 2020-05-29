@@ -35,8 +35,13 @@ public class RentalServiceApi {
     }
 
     @PostMapping("/rent")
-    public RentalService rentBook(@RequestBody RentBookWrapper rentBookWrapper) {
+    public Boolean rentBook(@RequestBody RentBookWrapper rentBookWrapper) {
         return rentalServiceManager.rentBook(rentBookWrapper);
+    }
+
+    @PostMapping("/return")
+    public Boolean returnBook(@RequestBody RentBookWrapper rentBookWrapper) {
+        return rentalServiceManager.returnBook(rentBookWrapper);
     }
 
     @PutMapping

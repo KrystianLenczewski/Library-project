@@ -8,6 +8,7 @@ import pl.springboot.bookrentalservice.dao.entity.UserLibrary;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -31,6 +32,10 @@ public class AdminManager {
                 .filter(f->f.getLogin().indexOf(subLogin)!=-1);
 
         return result;
+    }
+
+    public Optional<UserLibrary> findUsersById(Long id){
+        return  adminRepo.findById(id);
     }
 
     public UserLibrary save(UserLibrary userLibrary){

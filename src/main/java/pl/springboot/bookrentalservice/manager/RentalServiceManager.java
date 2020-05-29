@@ -10,21 +10,27 @@ import pl.springboot.bookrentalservice.dao.RentalServiceRepo;
 
 import pl.springboot.bookrentalservice.dao.entity.RentalBook;
 import pl.springboot.bookrentalservice.dao.entity.RentalService;
+import pl.springboot.bookrentalservice.dao.entity.UserLibrary;
 import pl.springboot.bookrentalservice.dao.modelWrappers.RentBookWrapper;
 
 import java.time.LocalDate;
 import java.util.Optional;
+import java.util.stream.StreamSupport;
 
 @Service
 public class RentalServiceManager {
 
     private RentalServiceRepo rentalServiceRepo;
     private BookRentalRepo bookRentalRepo;
+    private BookRentalManager bookRentalManager;
+    private AdminManager adminManager;
 
     @Autowired
-    private RentalServiceManager(RentalServiceRepo rentalServiceRepo, BookRentalRepo bookRentalRepo) {
+    private RentalServiceManager(RentalServiceRepo rentalServiceRepo, BookRentalRepo bookRentalRepo, BookRentalManager bookRentalManager, AdminManager adminManager) {
         this.rentalServiceRepo = rentalServiceRepo;
         this.bookRentalRepo = bookRentalRepo;
+        this.bookRentalManager = bookRentalManager;
+        this.adminManager = adminManager;
     }
 
     public Iterable<RentalService> findAll() {
@@ -34,6 +40,15 @@ public class RentalServiceManager {
     public Optional<RentalService> findById(Long index) {
         return rentalServiceRepo.findById(index);
     }
+
+    public Optional<RentalService> findByUserAndBook(Long book, Long user) {
+        Iterable<RentalService> rentalServices = rentalServiceRepo.findAll();
+        return StreamSupport.stream(rentalServices.spliterator(),false)
+                .filter(x -> x.getIdBook() == book)
+                .filter(x -> x.getIdUser() == user)
+                .findFirst();
+    }
+
 
     public RentalService save(RentalService rentalService) {
         return rentalServiceRepo.save(rentalService);
@@ -48,10 +63,43 @@ public class RentalServiceManager {
 
     }
 
-    public RentalService rentBook(RentBookWrapper rentBookWrapper) {
-        Optional<RentalBook> rentalBook = bookRentalRepo.findById(rentBookWrapper.getIdBook());
+    public boolean rentBook(RentBookWrapper rentBookWrapper) {
+        Optional<RentalBook> rentalBook = bookRentalManager.findById(rentBookWrapper.getIdBook());
         //getting user here
-        RentalService rentalService = new RentalService(0L, rentalBook.get().getIdBook().longValue(),rentalBook.get().getIdBook().longValue() ,LocalDate.now(),LocalDate.now());
-        return rentalServiceRepo.save(rentalService);
+
+        if(rentalBook.isPresent() && !rentalBook.get().isRent()){
+
+            rentalBook.get().setRent(true);
+            bookRentalRepo.save(rentalBook.get());
+
+            RentalService rentalService = new RentalService(0L, rentalBook.get().getIdBook().longValue(),rentBookWrapper.getIdUser() ,LocalDate.now(),LocalDate.now());
+             rentalServiceRepo.save(rentalService);
+             return true;
+        }
+        return false;
+    }
+
+    public Boolean returnBook(RentBookWrapper rentBookWrapper) {
+        Optional<RentalBook> rentalBook = bookRentalManager.findById(rentBookWrapper.getIdBook());
+        Optional<UserLibrary> user = adminManager.findUsersById(rentBookWrapper.getIdUser());
+        System.out.println(rentalBook.isPresent());
+        System.out.println(user.isPresent());
+
+        if(rentalBook.isPresent() && user.isPresent() && rentalBook.get().isRent()){
+            {
+                Optional<RentalService> rentalService = this.findByUserAndBook(rentalBook.get().getIdBook(),user.get().getId());
+                System.out.println(rentalService.isPresent());
+                rentalService.ifPresent(rentalService1 -> {
+                    rentalService1.setDateOfReturn(LocalDate.now());
+                    rentalBook.get().setRent(false);
+
+                    rentalServiceRepo.save(rentalService1);
+                    bookRentalRepo.save(rentalBook.get());
+                });
+
+                return true;
+            }}
+
+        return false;
     }
 }

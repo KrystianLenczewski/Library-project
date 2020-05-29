@@ -10,6 +10,8 @@ import pl.springboot.bookrentalservice.dao.entity.RentalBook;
 
 import java.time.LocalDate;
 import java.util.Optional;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 @Service
 public class BookRentalManager {
@@ -25,7 +27,12 @@ public class BookRentalManager {
     }
 
     public Optional<RentalBook> findById(Long index) {
-       return bookRentalRepo.findById(index);
+        Iterable<RentalBook> rentalBooks = bookRentalRepo.findAll();
+
+        return StreamSupport.stream(rentalBooks.spliterator(),false)
+                .filter(x -> x.getIdBook() == index)
+                .findFirst();
+
     }
 
     public RentalBook save(RentalBook rentalBook) {

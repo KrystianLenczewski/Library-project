@@ -40,10 +40,10 @@ public class BookManager {
         bookRepo.deleteById(id);
     }
 
-    @EventListener(ApplicationReadyEvent.class)
-    public void fillDB() {
-        save(new Book(1L,"Historia Roja", LocalDate.of(1993,2,2),"Krystian Lenczewski"));
-        save(new Book(2L,"Trzy Wierzby",LocalDate.of(1999,2,2),"Kamil Lenczewski"));
-
-    }
+//    @EventListener(ApplicationReadyEvent.class)
+//    public void fillDB() {
+//        save(new Book(1L,"Historia Roja", LocalDate.of(1993,2,2),"Krystian Lenczewski"));
+//        save(new Book(2L,"Trzy Wierzby",LocalDate.of(1999,2,2),"Kamil Lenczewski"));
+//
+//    }
 }
