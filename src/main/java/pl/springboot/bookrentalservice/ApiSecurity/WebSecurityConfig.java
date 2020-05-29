@@ -14,10 +14,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .antMatchers("/api/login/").permitAll()
-                .antMatchers("/api/books/*").authenticated()
-                .antMatchers("/api/admin/*").hasRole("Administrator")
+                .antMatchers("/api/books/**").authenticated()
+                .antMatchers("/api/admin/**").hasRole("Administrator")
                 .and()
-                .addFilter(new JwtFilter(authenticationManager()));
+                .addFilter(new JwtFilter(authenticationManager()))
+                .csrf().disable();
 
     }
 }

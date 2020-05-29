@@ -2,6 +2,7 @@ package pl.springboot.bookrentalservice.api;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import pl.springboot.bookrentalservice.dao.entity.Book;
 import pl.springboot.bookrentalservice.manager.BookManager;
@@ -22,6 +23,7 @@ public class BookApi {
 
     @GetMapping("/all")
     public Iterable<Book> getAll() {
+
         return bookManager.findAll();
     }
 

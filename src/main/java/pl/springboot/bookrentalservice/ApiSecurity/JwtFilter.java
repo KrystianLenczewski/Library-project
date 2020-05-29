@@ -32,6 +32,7 @@ public class JwtFilter extends BasicAuthenticationFilter {
         String url = request.getServletPath();
         if (url.equals("/api/login/"))
             chain.doFilter(request,response);
+
         String header = request.getHeader("Authorization");
         if (header!=null) {
             UsernamePasswordAuthenticationToken authResult = getAuthenticationByToken(header);
@@ -39,8 +40,11 @@ public class JwtFilter extends BasicAuthenticationFilter {
                 SecurityContextHolder.getContext().setAuthentication(authResult);
                 chain.doFilter(request,response);
             }
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED,"No permissions");
+            else
+                response.sendError(HttpServletResponse.SC_UNAUTHORIZED,"No permissions");
         }
+        else
+        response.sendError(HttpServletResponse.SC_UNAUTHORIZED,"No permissions");
     }
 
     private UsernamePasswordAuthenticationToken getAuthenticationByToken(String header) {
@@ -51,9 +55,9 @@ public class JwtFilter extends BasicAuthenticationFilter {
             String username = claimsJws.getBody().get("login").toString();
             String role = claimsJws.getBody().get("role").toString();
 
-            Set<SimpleGrantedAuthority> roleCollection = Collections.singleton(new SimpleGrantedAuthority(role));
+            Set<SimpleGrantedAuthority> roleCollection = Collections.singleton(new SimpleGrantedAuthority("ROLE_"+role));
 
-            UsernamePasswordAuthenticationToken result = new UsernamePasswordAuthenticationToken(username, roleCollection);
+            UsernamePasswordAuthenticationToken result = new UsernamePasswordAuthenticationToken(username,null ,roleCollection);
             return result;
         }
         catch (Exception e){

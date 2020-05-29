@@ -41,7 +41,7 @@ public class LoginApi {
         Key signingKey = new SecretKeySpec(apiSecretKey,algorithm.getJcaName());
 
         return Jwts.builder()
-                .claim("role","ROLE_"+userToLogin.getRole())
+                .claim("role",userToLogin.getRole())
                 .claim("login",userToLogin.getLogin())
                 .setIssuedAt(now)
                 .setExpiration(new Date(nowMillis+(60*60000)))
