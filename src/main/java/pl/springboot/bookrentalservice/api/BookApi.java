@@ -1,5 +1,6 @@
 package pl.springboot.bookrentalservice.api;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import pl.springboot.bookrentalservice.dao.entity.Book;
@@ -31,6 +32,7 @@ public class BookApi {
 
     @PostMapping
     public Book addBook(@RequestBody Book book) {
+
         return bookManager.save(book);
     }
 
