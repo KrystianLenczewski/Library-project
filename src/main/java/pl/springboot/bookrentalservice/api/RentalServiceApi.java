@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import pl.springboot.bookrentalservice.dao.entity.Book;
 import pl.springboot.bookrentalservice.dao.entity.RentalService;
+import pl.springboot.bookrentalservice.dao.modelWrappers.RentBookWrapper;
 import pl.springboot.bookrentalservice.manager.RentalServiceManager;
 
 import java.util.Optional;
@@ -31,6 +32,11 @@ public class RentalServiceApi {
     @PostMapping
     public RentalService addBook(@RequestBody RentalService rentalService) {
         return rentalServiceManager.save(rentalService);
+    }
+
+    @PostMapping("/rent")
+    public RentalService rentBook(@RequestBody RentBookWrapper rentBookWrapper) {
+        return rentalServiceManager.rentBook(rentBookWrapper);
     }
 
     @PutMapping

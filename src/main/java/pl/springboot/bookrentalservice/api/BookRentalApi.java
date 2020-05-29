@@ -32,10 +32,10 @@ public class BookRentalApi {
 //        return libraryManager.save(book);
 //    }
 //
-//    @PutMapping
-//    public Book updateBook(@RequestBody Book book) {
-//        return libraryManager.save(book);
-//    }
+    @PutMapping
+    public RentalBook updateBook(@RequestBody RentalBook rentalBook) {
+        return bookRentalManager.save(rentalBook);
+    }
 //
 //    @DeleteMapping
 //    public void deleteBook(@RequestParam Long index) {

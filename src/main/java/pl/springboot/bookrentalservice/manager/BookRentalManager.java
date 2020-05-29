@@ -32,10 +32,10 @@ public class BookRentalManager {
         return bookRentalRepo.save(rentalBook);
     }
 
-    @EventListener(ApplicationReadyEvent.class)
-    public void fillDB() {
-        save(new RentalBook(1L,1L,true));
-        save(new RentalBook(2L,2L,false));
-
-    }
+//    @EventListener(ApplicationReadyEvent.class)
+//    public void fillDB() {
+//        save(new RentalBook(1L,1L,true));
+//        save(new RentalBook(2L,2L,false));
+//
+//    }
 }
