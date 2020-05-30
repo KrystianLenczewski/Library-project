@@ -24,7 +24,7 @@ public class BookRentalApi {
 
     @GetMapping
     public Optional<RentalBook> getById(@RequestParam Long index) {
-        return bookRentalManager.findById(index);
+        return bookRentalManager.findByIdBook(index);
     }
 
     @PostMapping

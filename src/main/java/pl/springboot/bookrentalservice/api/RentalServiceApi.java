@@ -30,13 +30,10 @@ public class RentalServiceApi {
         return rentalServiceManager.findById(index);
     }
 
-    @PostMapping
-    public RentalService addBook(@RequestBody RentalService rentalService) {
-        return rentalServiceManager.save(rentalService);
-    }
+
 
     @PostMapping("/rent")
-    public Boolean rentBook(@RequestBody RentBookWrapper rentBookWrapper) {
+    public Object rentBook(@RequestBody RentBookWrapper rentBookWrapper) {
         return rentalServiceManager.rentBook(rentBookWrapper);
     }
 

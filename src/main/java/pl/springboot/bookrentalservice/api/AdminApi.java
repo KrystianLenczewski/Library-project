@@ -22,8 +22,8 @@ public class AdminApi {
     }
 
     @GetMapping("/user")
-    public Iterable<UserLibrary> findByLogin(@RequestParam String subStringLogin){
-        return adminManager.findUsersByLogin(subStringLogin);
+    public Iterable<UserLibrary> findByLogin(@RequestParam String login){
+        return adminManager.findUsersByLogin(login);
     }
 
     @PostMapping("/register")

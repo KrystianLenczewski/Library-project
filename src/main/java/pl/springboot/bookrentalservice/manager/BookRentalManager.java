@@ -26,11 +26,11 @@ public class BookRentalManager {
       return  bookRentalRepo.findAll();
     }
 
-    public Optional<RentalBook> findById(Long index) {
+    public Optional<RentalBook> findByIdBook(Long index) {
         Iterable<RentalBook> rentalBooks = bookRentalRepo.findAll();
 
         return StreamSupport.stream(rentalBooks.spliterator(),false)
-                .filter(x -> x.getIdBook() == index)
+                .filter(x -> x.getIdBook().equals(index))
                 .findFirst();
 
     }

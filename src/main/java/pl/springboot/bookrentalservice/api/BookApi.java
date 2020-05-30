@@ -34,19 +34,19 @@ public class BookApi {
     }
 
     @PostMapping
-    public Book addBook(@RequestBody Book book) {
+    public Object addBook(@RequestBody Book book) {
 
         return bookManager.save(book);
     }
 
     @PutMapping
-    public Book updateBook(@RequestBody Book book) {
-        return bookManager.save(book);
+    public Object updateBook(@RequestBody Book book) {
+        return bookManager.update(book);
     }
 
     @DeleteMapping
-    public void deleteBook(@RequestParam Long index) {
-        bookManager.deleteById(index);
+    public void deleteBook(@RequestParam Long id) {
+        bookManager.deleteById(id);
     }
 
     @GetMapping("/search")

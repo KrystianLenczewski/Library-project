@@ -28,10 +28,8 @@ public class AdminManager {
 
     public Iterable<UserLibrary> findUsersByLogin(String subLogin){
         Iterable<UserLibrary> result = adminRepo.findAll();
-        StreamSupport.stream(result.spliterator(),false)
-                .filter(f->f.getLogin().indexOf(subLogin)!=-1);
-
-        return result;
+       return StreamSupport.stream(result.spliterator(),false)
+                .filter(f->f.getLogin().indexOf(subLogin)!=-1).collect(Collectors.toList());
     }
 
     public Optional<UserLibrary> findUsersById(Long id){

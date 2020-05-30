@@ -5,7 +5,7 @@ import java.time.LocalDate;
 public class SearchWrapper {
     String author;
     String title;
-    LocalDate date;
+    String date;
     public String getAuthor() {
         return author;
     }
@@ -22,11 +22,11 @@ public class SearchWrapper {
         this.title = title;
     }
 
-    public LocalDate getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(String date) {
         this.date = date;
     }
 
