@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import pl.springboot.bookrentalservice.dao.entity.Book;
+import pl.springboot.bookrentalservice.dao.modelWrappers.SearchWrapper;
 import pl.springboot.bookrentalservice.manager.BookManager;
 
 import java.util.Optional;
@@ -46,6 +47,11 @@ public class BookApi {
     @DeleteMapping
     public void deleteBook(@RequestParam Long index) {
         bookManager.deleteById(index);
+    }
+
+    @GetMapping("/search")
+    public Iterable<Book> serach (SearchWrapper searchWrapper){
+        return bookManager.search(searchWrapper);
     }
 
 }

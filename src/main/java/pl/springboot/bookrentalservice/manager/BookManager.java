@@ -8,9 +8,14 @@ import pl.springboot.bookrentalservice.dao.BookRentalRepo;
 import pl.springboot.bookrentalservice.dao.BookRepo;
 import pl.springboot.bookrentalservice.dao.entity.Book;
 import pl.springboot.bookrentalservice.dao.entity.RentalBook;
+import pl.springboot.bookrentalservice.dao.entity.RentalService;
+import pl.springboot.bookrentalservice.dao.modelWrappers.SearchWrapper;
 
 import java.time.LocalDate;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 @Service
 public class BookManager {
@@ -38,6 +43,23 @@ public class BookManager {
 
     public void deleteById(Long id) {
         bookRepo.deleteById(id);
+    }
+
+
+    public Iterable<Book> search(SearchWrapper searchWrapper) {
+
+        Iterable<Book> books = bookRepo.findAll();
+        Stream<Book> bookStream = StreamSupport.stream(books.spliterator(),false);
+        ;
+        if (searchWrapper.getAuthor() != null)
+        bookStream = bookStream.filter(x -> x.getAuthor().equals(searchWrapper.getAuthor()));
+        if (searchWrapper.getTitle() != null)
+        bookStream = bookStream.filter(x -> x.getTitle().equals(searchWrapper.getTitle()));
+        if (searchWrapper.getDate() != null)
+        bookStream = bookStream.filter(x -> x.getProductionYear()==(searchWrapper.getDate()));
+
+
+        return bookStream.collect(Collectors.toList());
     }
 
 //    @EventListener(ApplicationReadyEvent.class)

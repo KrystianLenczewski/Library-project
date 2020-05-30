@@ -12,9 +12,12 @@ import pl.springboot.bookrentalservice.dao.entity.RentalBook;
 import pl.springboot.bookrentalservice.dao.entity.RentalService;
 import pl.springboot.bookrentalservice.dao.entity.UserLibrary;
 import pl.springboot.bookrentalservice.dao.modelWrappers.RentBookWrapper;
+import pl.springboot.bookrentalservice.dao.modelWrappers.SearchWrapper;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 @Service
@@ -82,13 +85,12 @@ public class RentalServiceManager {
     public Boolean returnBook(RentBookWrapper rentBookWrapper) {
         Optional<RentalBook> rentalBook = bookRentalManager.findById(rentBookWrapper.getIdBook());
         Optional<UserLibrary> user = adminManager.findUsersById(rentBookWrapper.getIdUser());
-        System.out.println(rentalBook.isPresent());
-        System.out.println(user.isPresent());
+
 
         if(rentalBook.isPresent() && user.isPresent() && rentalBook.get().isRent()){
             {
                 Optional<RentalService> rentalService = this.findByUserAndBook(rentalBook.get().getIdBook(),user.get().getId());
-                System.out.println(rentalService.isPresent());
+
                 rentalService.ifPresent(rentalService1 -> {
                     rentalService1.setDateOfReturn(LocalDate.now());
                     rentalBook.get().setRent(false);
@@ -102,4 +104,7 @@ public class RentalServiceManager {
 
         return false;
     }
+
+
+
 }

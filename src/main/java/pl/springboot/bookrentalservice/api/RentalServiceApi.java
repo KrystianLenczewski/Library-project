@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.*;
 import pl.springboot.bookrentalservice.dao.entity.Book;
 import pl.springboot.bookrentalservice.dao.entity.RentalService;
 import pl.springboot.bookrentalservice.dao.modelWrappers.RentBookWrapper;
+import pl.springboot.bookrentalservice.dao.modelWrappers.SearchWrapper;
 import pl.springboot.bookrentalservice.manager.RentalServiceManager;
 
 import java.util.Optional;
