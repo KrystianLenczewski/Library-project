@@ -27,7 +27,7 @@ public class LoginApi {
         this.adminManager=adminManager;
     }
 
-    @GetMapping
+    @PostMapping
     public String login(@RequestBody UserLibrary userLibrary){
         UserLibrary userToLogin = adminManager.findUserByLoginAndPassword(userLibrary.getLogin(),userLibrary.getPassword());
         if (userToLogin==null)
