@@ -1,15 +1,21 @@
 package pl.springboot.bookrentalservice.api;
 
 
+import com.google.gson.Gson;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.apache.commons.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import pl.springboot.bookrentalservice.ApiSecurity.JwtFilter;
 import pl.springboot.bookrentalservice.dao.AdminRepo;
 import pl.springboot.bookrentalservice.dao.entity.UserLibrary;
+import pl.springboot.bookrentalservice.dao.modelWrappers.LoginAndRoleWrapper;
+import pl.springboot.bookrentalservice.dao.modelWrappers.TokenWrapper;
 import pl.springboot.bookrentalservice.manager.AdminManager;
 
 import javax.crypto.spec.SecretKeySpec;
+import javax.servlet.http.HttpServletRequest;
 import javax.xml.bind.DatatypeConverter;
 import java.security.Key;
 import java.util.Date;
@@ -45,4 +51,27 @@ public class LoginApi {
                 .signWith(algorithm,signingKey)
                 .compact();
     }
+
+    @GetMapping
+    public Object getLoginAndRole (HttpServletRequest request){
+        String jwtToken = request.getHeader("Authorization").replace("Bearer ","");
+        String result="cwel";
+        java.util.Base64.Decoder decoder = java.util.Base64.getUrlDecoder();
+        if(jwtToken != null) {
+            String[] parts = jwtToken.split("\\."); // split out the "parts" (header, payload and signature)
+
+            if(parts.length == 3){
+                result  = new String(decoder.decode(parts[1]));
+
+                TokenWrapper tokenAttributes = new Gson().fromJson(result, TokenWrapper.class);
+                LoginAndRoleWrapper loginAndRoleWrapper = new LoginAndRoleWrapper(tokenAttributes.getLogin(),tokenAttributes.getRole());
+                return loginAndRoleWrapper;
+            }
+
+        }
+
+        return "xd";
+    }
+
+
 }

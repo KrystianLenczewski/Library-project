@@ -1,9 +1,14 @@
 package pl.springboot.bookrentalservice.api;
 
+import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import pl.springboot.bookrentalservice.dao.entity.UserLibrary;
+import pl.springboot.bookrentalservice.dao.modelWrappers.LoginAndRoleWrapper;
+import pl.springboot.bookrentalservice.dao.modelWrappers.TokenWrapper;
 import pl.springboot.bookrentalservice.manager.AdminManager;
+
+import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("api/admin")
@@ -30,5 +35,7 @@ public class AdminApi {
     public UserLibrary createLibraryUser(@RequestBody UserLibrary userLibrary){
         return adminManager.save(userLibrary);
     }
+
+
 
 }
