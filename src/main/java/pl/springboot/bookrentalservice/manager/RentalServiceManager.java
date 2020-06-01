@@ -88,15 +88,16 @@ public class RentalServiceManager {
             {
                 Optional<RentalService> rentalService = this.findByUserAndBook(rentalBook.get().getIdBook(),user.get().getId());
 
-                rentalService.ifPresent(rentalService1 -> {
-                    rentalService1.setDateOfReturn(LocalDate.now());
+
+                if(rentalService.isPresent())
+                {
+                    rentalService.get().setDateOfReturn(LocalDate.now());
                     rentalBook.get().setRent(false);
 
-                    rentalServiceRepo.save(rentalService1);
+                    rentalServiceRepo.save(rentalService.get());
                     bookRentalRepo.save(rentalBook.get());
-
-                });
-
+                    return true;
+                }
 
             }}
 
