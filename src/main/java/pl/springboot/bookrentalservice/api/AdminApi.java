@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import pl.springboot.bookrentalservice.dao.entity.UserLibrary;
+import pl.springboot.bookrentalservice.dao.modelWrappers.DeleteWrapper;
 import pl.springboot.bookrentalservice.dao.modelWrappers.LoginAndRoleWrapper;
 import pl.springboot.bookrentalservice.dao.modelWrappers.TokenWrapper;
 import pl.springboot.bookrentalservice.manager.AdminManager;
@@ -36,6 +37,10 @@ public class AdminApi {
         return adminManager.save(userLibrary);
     }
 
+    @PostMapping("/delete")
+    public Object deleteUser (@RequestBody DeleteWrapper deleteWrapper){
+        return adminManager.deleteUser(deleteWrapper.getId());
+    }
 
 
-}
+    }

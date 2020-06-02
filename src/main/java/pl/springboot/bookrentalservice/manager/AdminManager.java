@@ -2,9 +2,12 @@ package pl.springboot.bookrentalservice.manager;
 
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.NonNull;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 import pl.springboot.bookrentalservice.dao.AdminRepo;
+import pl.springboot.bookrentalservice.dao.RentalServiceRepo;
+import pl.springboot.bookrentalservice.dao.entity.RentalService;
 import pl.springboot.bookrentalservice.dao.entity.UserLibrary;
 import pl.springboot.bookrentalservice.dao.modelWrappers.LoginAndRoleWrapper;
 import pl.springboot.bookrentalservice.dao.modelWrappers.TokenWrapper;
@@ -12,18 +15,21 @@ import pl.springboot.bookrentalservice.dao.modelWrappers.TokenWrapper;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 @Service
 public class AdminManager {
 
     private AdminRepo adminRepo;
-
+    private RentalServiceRepo rentalServiceRepo;
     @Autowired
-    public AdminManager(AdminRepo adminRepo){
+    public AdminManager(AdminRepo adminRepo, RentalServiceRepo rentalServiceRepo){
         this.adminRepo=adminRepo;
+        this.rentalServiceRepo = rentalServiceRepo;
     }
 
     public Iterable<UserLibrary> findAll(){
@@ -89,5 +95,37 @@ public class AdminManager {
         }
 
         return "błąd nie znaleziono takiego typa";
+    }
+
+    public Object deleteUser(Long id) {
+        Optional<UserLibrary> user = findUsersById(id);
+
+        if(user.isPresent()){
+            Iterable<RentalService> rentalServices = rentalServiceRepo.findAll();
+
+           Stream<RentalService> serviceStream = StreamSupport.stream(rentalServices.spliterator(),false)
+                   .filter(x -> x.getIdUser().equals(user.get().getId()));
+
+
+           if(serviceStream.filter(x -> Objects.isNull(x.getDateOfReturn())).count()>0){
+                   return "Nie można usunąc użytkownika, nie zwrócił wszystkich książek";
+           }
+           else
+           {
+                serviceStream = StreamSupport.stream(rentalServices.spliterator(),false)
+                       .filter(x -> x.getIdUser().equals(user.get().getId()));
+
+//               if(serviceStream.collect(Collectors.toList()).size()>0) {
+                   for (RentalService x : serviceStream.collect(Collectors.toList())) {
+                       rentalServiceRepo.delete(x);
+                   }
+               //}
+               deleteById(user.get().getId());
+
+               return "pomyślnie usunięto użytkownika";
+           }
+
+        }
+        return "Nie znaleziono takiego użytkonika";
     }
 }
