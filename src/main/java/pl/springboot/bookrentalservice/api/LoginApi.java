@@ -52,25 +52,10 @@ public class LoginApi {
                 .compact();
     }
 
-    @GetMapping
+    @GetMapping("/info")
     public Object getLoginAndRole (HttpServletRequest request){
-        String jwtToken = request.getHeader("Authorization").replace("Bearer ","");
-        String result="cwel";
-        java.util.Base64.Decoder decoder = java.util.Base64.getUrlDecoder();
-        if(jwtToken != null) {
-            String[] parts = jwtToken.split("\\."); // split out the "parts" (header, payload and signature)
+        return adminManager.getLoginAndRole(request);
 
-            if(parts.length == 3){
-                result  = new String(decoder.decode(parts[1]));
-
-                TokenWrapper tokenAttributes = new Gson().fromJson(result, TokenWrapper.class);
-                LoginAndRoleWrapper loginAndRoleWrapper = new LoginAndRoleWrapper(tokenAttributes.getLogin(),tokenAttributes.getRole());
-                return loginAndRoleWrapper;
-            }
-
-        }
-
-        return "xd";
     }
 
 

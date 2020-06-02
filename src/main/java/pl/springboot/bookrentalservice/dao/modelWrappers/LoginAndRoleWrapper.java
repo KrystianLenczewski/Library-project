@@ -1,6 +1,10 @@
 package pl.springboot.bookrentalservice.dao.modelWrappers;
 
 public class LoginAndRoleWrapper {
+    Long id;
+
+
+
     String login;
     String role;
 
@@ -23,5 +27,13 @@ public class LoginAndRoleWrapper {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }
