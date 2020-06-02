@@ -46,8 +46,18 @@ public class AdminManager {
         return  adminRepo.findById(id);
     }
 
-    public UserLibrary save(UserLibrary userLibrary){
-        return adminRepo.save(userLibrary);
+    public Object save(UserLibrary userLibrary){
+
+        Iterable<UserLibrary> users = adminRepo.findAll();
+
+        Optional<UserLibrary> exists = StreamSupport.stream(users.spliterator(),false)
+                .filter(x -> x.getLogin().equals(userLibrary.getLogin())).findFirst();
+
+        if(exists.isPresent()){
+            return "użytkonik juz istnieje";
+        }
+        else
+            return adminRepo.save(userLibrary);
     }
 
     public void deleteById(Long userId){

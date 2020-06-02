@@ -33,7 +33,7 @@ public class AdminApi {
     }
 
     @PostMapping("/register")
-    public UserLibrary createLibraryUser(@RequestBody UserLibrary userLibrary){
+    public Object createLibraryUser(@RequestBody UserLibrary userLibrary){
         return adminManager.save(userLibrary);
     }
 
