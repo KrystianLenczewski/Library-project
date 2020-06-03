@@ -2,6 +2,7 @@ package pl.springboot.bookrentalservice.manager;
 
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.lang.NonNull;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
@@ -46,18 +47,27 @@ public class AdminManager {
         return  adminRepo.findById(id);
     }
 
-    public Object save(UserLibrary userLibrary){
+    public ResponseEntity<Object> save(UserLibrary userLibrary) {
+        if (!userLibrary.hasNullValue()) {
+            Iterable<UserLibrary> users = adminRepo.findAll();
 
-        Iterable<UserLibrary> users = adminRepo.findAll();
+            Optional<UserLibrary> exists = StreamSupport.stream(users.spliterator(), false)
+                    .filter(x -> x.getLogin().equals(userLibrary.getLogin())).findFirst();
 
-        Optional<UserLibrary> exists = StreamSupport.stream(users.spliterator(),false)
-                .filter(x -> x.getLogin().equals(userLibrary.getLogin())).findFirst();
+            if (exists.isPresent()) {
+                return ResponseEntity
+                        .badRequest()
+                        .body("użytkonik juz istnieje");
+            } else
+                return ResponseEntity
+                        .ok()
+                        .body(adminRepo.save(userLibrary));
 
-        if(exists.isPresent()){
-            return "użytkonik juz istnieje";
         }
         else
-            return adminRepo.save(userLibrary);
+            return ResponseEntity
+                    .badRequest()
+                    .body("naley podac wszystkie parametry");
     }
 
     public void deleteById(Long userId){

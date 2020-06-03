@@ -15,6 +15,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers("/api/login/").permitAll()
                 .antMatchers("/api/books/**").authenticated()
+                .antMatchers("/api/token/**").authenticated()
                 .antMatchers("/api/admin/**").hasRole("Administrator")
                 .and()
                 .addFilter(new JwtFilter(authenticationManager()))

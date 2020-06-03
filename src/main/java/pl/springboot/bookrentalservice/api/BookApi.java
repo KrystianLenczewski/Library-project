@@ -2,6 +2,7 @@ package pl.springboot.bookrentalservice.api;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import pl.springboot.bookrentalservice.dao.entity.Book;
@@ -34,7 +35,7 @@ public class BookApi {
     }
 
     @PostMapping
-    public Object addBook(@RequestBody Book book) {
+    public ResponseEntity<Object> addBook(@RequestBody Book book) {
 
         return bookManager.save(book);
     }

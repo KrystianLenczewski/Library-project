@@ -54,7 +54,7 @@ public class LoginApi {
 
     @GetMapping("/info")
     public Object getLoginAndRole (HttpServletRequest request){
-        return adminManager.getLoginAndRole(request);
+            return adminManager.getLoginAndRole(request);
 
     }
 

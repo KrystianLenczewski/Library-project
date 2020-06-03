@@ -58,4 +58,15 @@ public class UserLibrary {
     public void setRole(String role) {
         this.role = role;
     }
+
+    public boolean hasNullValue(){
+        if(this.getLogin()==null)
+            return true;
+        if(this.getPassword()==null)
+            return true;
+        if(this.role==null)
+            return true;
+        return false;
+
+    }
 }

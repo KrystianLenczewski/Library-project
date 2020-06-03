@@ -3,6 +3,7 @@ package pl.springboot.bookrentalservice.manager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import pl.springboot.bookrentalservice.dao.BookRentalRepo;
 import pl.springboot.bookrentalservice.dao.BookRepo;
@@ -40,13 +41,19 @@ public class BookManager {
         return bookRepo.findAll();
     }
 
-    public Object save(Book book) {
-        if(book.getId()==null || book.getId()==0){
+    public ResponseEntity<Object> save(Book book) {
+
+        if(!book.hasNullValue())
+        if(book.getId()==null || book.getId()==0  ){
             bookRepo.save(book);
             bookRentalRepo.save(new RentalBook(0L, book.getId(),false));
-            return book;
+            return ResponseEntity
+                    .ok()
+                    .body(book);
         }
-     return "400";
+         return ResponseEntity
+                 .badRequest()
+                 .body("wszystkie parametry musza zostac podane");
     }
 
     public Object deleteById(Long id) {
@@ -55,7 +62,7 @@ public class BookManager {
         if(rentalBook.isPresent()) {
             bookRentalRepo.delete(rentalBook.get());
             bookRepo.deleteById(id);
-            return 200;
+                return 200;
         }
         return 400;
     }

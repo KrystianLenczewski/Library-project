@@ -58,4 +58,14 @@ public class Book {
     public void setAuthor(String author) {
         this.author = author;
     }
+
+    public boolean hasNullValue() {
+        if(this.getTitle() == null)
+            return true;
+        if (this.getAuthor() == null)
+            return true;
+        if(this.getProductionYear() == null)
+            return true;
+        return false;
+    }
 }

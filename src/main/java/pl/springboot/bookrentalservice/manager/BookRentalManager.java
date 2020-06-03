@@ -43,10 +43,5 @@ public class BookRentalManager {
         bookRentalRepo.deleteById(index);
     }
 
-//    @EventListener(ApplicationReadyEvent.class)
-//    public void fillDB() {
-//        save(new RentalBook(1L,1L,true));
-//        save(new RentalBook(2L,2L,false));
-//
-//    }
+
 }
