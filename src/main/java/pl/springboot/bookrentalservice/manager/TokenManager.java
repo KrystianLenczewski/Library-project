@@ -9,8 +9,11 @@ import pl.springboot.bookrentalservice.dao.modelWrappers.TokenWrapper;
 import javax.servlet.http.HttpServletRequest;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Locale;
+
+import static org.apache.tomcat.jni.Time.now;
 
 @Service
 public class TokenManager {
@@ -29,9 +32,9 @@ public class TokenManager {
 
                 TokenWrapper tokenAttributes = new Gson().fromJson(result, TokenWrapper.class);
 
-                String epochString = Integer.toString(tokenAttributes.getExp());
-                long epoch = Long.parseLong( epochString );
-                String expiry= new SimpleDateFormat("dd-MM-yyyy HH:mm:ss" ).format(new Date(epoch * 1000L));
+                String time = Integer.toString((int) (tokenAttributes.getIat() - new Date().getTime()/1000));
+                long timeL = Long.parseLong( time );
+                String expiry= new SimpleDateFormat("HH:mm:ss" ).format(new Date(timeL * 1000L));
                 return ResponseEntity
                         .ok()
                         .body(expiry);
