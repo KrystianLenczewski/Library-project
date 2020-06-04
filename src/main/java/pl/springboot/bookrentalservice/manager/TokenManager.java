@@ -32,7 +32,7 @@ public class TokenManager {
 
                 TokenWrapper tokenAttributes = new Gson().fromJson(result, TokenWrapper.class);
 
-                String time = Integer.toString((int) (tokenAttributes.getIat() - new Date().getTime()/1000));
+                String time = Integer.toString((int) (tokenAttributes.getExp() - new Date().getTime()/1000));
                 long timeL = Long.parseLong( time );
                 String expiry= new SimpleDateFormat("HH:mm:ss" ).format(new Date(timeL * 1000L));
                 return ResponseEntity
